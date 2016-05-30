@@ -213,7 +213,7 @@ public class MainActivity extends TabActivity {
 			params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, 0); // 取消文字底边对齐
 			params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE); // 设置文字居中对齐
 
-			child.getLayoutParams().height = 60; // hard code
+			child.getLayoutParams().height = 150; // hard code
 		}
 
 	}
