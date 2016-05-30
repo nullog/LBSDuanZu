@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -46,9 +48,14 @@ public class LBSListActivity extends ListActivity implements OnScrollListener {
 	private int visibleLastIndex = 0;   //最后的可视项索引 
 	public int totalItem = -1;
 
+	@TargetApi(9)
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
 
 		loadMoreView = getLayoutInflater().inflate(R.layout.list_item_footer, null);
 		progressBar = (ProgressBar)loadMoreView.findViewById(R.id.progressBar);
