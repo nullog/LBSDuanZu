@@ -50,7 +50,7 @@ public class LBSMapActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		context = this;
 
-		initEngineManager(this);
+		initEngineManager(getApplicationContext());
 		
 		setContentView(R.layout.map);
 		
@@ -166,7 +166,7 @@ public class LBSMapActivity extends Activity {
 		DemoApplication app = (DemoApplication) getApplication();
 		List<ContentModel> list = app.getList();
 		mMapView.getOverlays().clear();
-		OverlayIcon ov = new OverlayIcon(null, this);
+		OverlayIcon ov = new OverlayIcon(null, mMapView, this);
 		for (ContentModel content : list) {
 			int latitude = (int) (content.getLatitude() * 1000000);
 			int longitude = (int) (content.getLongitude() * 1000000);
@@ -224,32 +224,27 @@ public class LBSMapActivity extends Activity {
 
 		private int clickedTapIndex = -1;
 
-		public OverlayIcon(Drawable marker, Context context) {
-			super(marker);
+		public OverlayIcon(Drawable marker, MapView mapView, Context context) {
+			super(marker, mapView);
 			this.mContext = context;
 			pop = new PopupOverlay(mMapView, new PopupClickListener() {
 
-				/*
-				 * 标记的弹出框被点击后回调
-				 * (non-Javadoc)
-				 * @see com.baidu.mapapi.map.PopupClickListener#onClickedPopup()
-				 */
+
 				@Override
-				public void onClickedPopup() {
-					String webUrl = list.get(clickedTapIndex).getWebUrl();
+				public void onClickedPopup(int i) {
+					String webUrl = list.get(i).getWebUrl();
 
 					Intent intent = new Intent();
 					intent.setAction("android.intent.action.VIEW");
 					Uri content_url = Uri.parse(webUrl);
 					intent.setData(content_url);
 					startActivity(intent);
-					
-				    //调用百度统计接口
-				    DemoApplication.getInstance().callStatistics();
 
+					//调用百度统计接口
+					DemoApplication.getInstance().callStatistics();
 				}
 			});
-			populate();
+			//populate();
 
 		}
 
@@ -300,12 +295,12 @@ public class LBSMapActivity extends Activity {
 
 		public void addItem(OverlayItem item) {
 			mGeoList.add(item);
-			populate();
+			//populate();
 		}
 
 		public void removeItem(int index) {
 			mGeoList.remove(index);
-			populate();
+			//populate();
 		}
 
 		private Bitmap convertViewToBitMap(View v) {
